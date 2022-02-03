@@ -2,8 +2,8 @@ import click
 import json
 import shutil
 from pathlib import Path
-from examples.question_answering.qa_sparse_xp import QASparseXP
-from examples.text_classification.glue_sparse_xp import GlueSparseXP
+from nn_pruning.examples.question_answering.qa_sparse_xp import QASparseXP
+from nn_pruning.examples.text_classification.glue_sparse_xp import GlueSparseXP
 
 @click.group()
 @click.pass_context
@@ -197,16 +197,16 @@ def finetune(
             param_dict["distil_teacher_name_or_path"] = distil_teacher_name_or_path
 
     if task in QA_TASKS:
-        import examples.question_answering.qa_sparse_xp as qa_sparse_xp
+        import nn_pruning.examples.question_answering.qa_sparse_xp as qa_sparse_xp
         experiment = qa_sparse_xp.QASparseXP(param_dict)
     elif task in SUMMARY_TASKS:
-        import examples.seq2seq.summarization_sparse_xp as summarization_sparse_xp
+        import nn_pruning.examples.seq2seq.summarization_sparse_xp as summarization_sparse_xp
         experiment = summarization_sparse_xp.SummarizationSparseXP(param_dict)
     elif task in TRANSLATION_TASKS:
-        import examples.seq2seq.translation_sparse_xp as translation_sparse_xp
+        import nn_pruning.examples.seq2seq.translation_sparse_xp as translation_sparse_xp
         experiment = translation_sparse_xp.TranslationSparseXP(param_dict)
     else:
-        import examples.text_classification.glue_sparse_xp as glue_sparse_xp
+        import nn_pruning.examples.text_classification.glue_sparse_xp as glue_sparse_xp
         experiment = glue_sparse_xp.GlueSparseXP(param_dict)
 
     # This does not actually use hyper parameter search right now, but it's useful for naming the output directory for example

@@ -23,9 +23,9 @@ if sys.version_info.major == 3 and 4 <= sys.version_info.minor <= 8:
   json.encoder._make_iterencode = _make_iterencode._make_iterencode
   indent = (4, None)
 
-from examples.question_answering.qa_sparse_xp import QASparseXP
-from examples.text_classification.glue_sparse_xp import GlueSparseXP
-from examples.seq2seq.summarization_sparse_xp import SummarizationSparseXP
+from nn_pruning.examples.question_answering.qa_sparse_xp import QASparseXP
+from nn_pruning.examples.text_classification.glue_sparse_xp import GlueSparseXP
+from nn_pruning.examples.seq2seq.summarization_sparse_xp import SummarizationSparseXP
 
 def pretty_json(p):
     return json.dumps(p, sort_keys=True, indent=indent, separators = [", ", ": "])

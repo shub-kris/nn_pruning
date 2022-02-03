@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def readme():
@@ -32,13 +32,13 @@ setup(
     author="",
     author_email="",
     license="MIT",
-    packages=["nn_pruning", "nn_pruning.modules"],
+    packages=find_packages(exclude='tests'),
     install_requires=["click", "transformers>=4.3.0", "torch>=1.6", "scikit-learn>=0.24"],
     extras_require=extras,
     test_suite="nose.collector",
     tests_require=["nose", "nose-cover3"],
     entry_points={
-        "console_scripts": ["nn_pruning_run_example=examples.command_line:main"],
+        "console_scripts": ["nn_pruning_run_example=nn_pruning.examples.command_line:main"],
     },
     include_package_data=True,
     zip_safe=False,

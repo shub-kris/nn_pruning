@@ -1,10 +1,10 @@
-from examples.question_answering.qa_xp import QAXP
-from examples.question_answering.qa_sparse_xp import QASparseXP
-from examples.text_classification.glue_xp import GlueXP
-from examples.text_classification.glue_sparse_xp import GlueSparseXP
-from examples.seq2seq.summarization_xp import SummarizationXP
-from examples.seq2seq.summarization_sparse_xp import SummarizationSparseXP
-import examples.xp as xp
+from nn_pruning.examples.question_answering.qa_xp import QAXP
+from nn_pruning.examples.question_answering.qa_sparse_xp import QASparseXP
+from nn_pruning.examples.text_classification.glue_xp import GlueXP
+from nn_pruning.examples.text_classification.glue_sparse_xp import GlueSparseXP
+from nn_pruning.examples.seq2seq.summarization_xp import SummarizationXP
+from nn_pruning.examples.seq2seq.summarization_sparse_xp import SummarizationSparseXP
+import nn_pruning.examples.xp as xp
 from pathlib import Path
 import json
 import torch

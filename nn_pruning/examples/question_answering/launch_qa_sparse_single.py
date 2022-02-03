@@ -10,14 +10,11 @@ def main():
     filename = Path(sys.argv[1]).resolve()
     param_dict = json.load(open(filename))
 
-    import examples.text_classification.glue_sparse_xp as glue_sparse_xp
+    import nn_pruning.examples.question_answering.qa_sparse_xp as qa_sparse_xp
 
-    glue = glue_sparse_xp.GlueSparseXP(param_dict)
+    qa = qa_sparse_xp.QASparseXP(param_dict)
+    qa.run()
 
-    def hp_space(trial):
-        return {}
-
-    glue.hyperparameter_search(direction="minimize", hp_space=hp_space, n_trials=1)
 
 
 def _mp_fn(index):

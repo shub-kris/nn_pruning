@@ -10,7 +10,7 @@ from transformers import (
     AutoModelForSequenceClassification,
 )
 
-from examples.question_answering.qa_xp import QAXP
+from nn_pruning.examples.question_answering.qa_xp import QAXP
 
 
 class PointProvider:

@@ -1,5 +1,5 @@
 import unittest
-from examples.question_answering.qa_xp import QAXP
+from nn_pruning.examples.question_answering.qa_xp import QAXP
 import tempfile
 from analysis.plot_data import HFModelStats, MobileBert
 from pathlib import Path
