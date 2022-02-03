@@ -150,51 +150,51 @@ def finetune(
     qat,
     qconfig
 ):
-
-    if json_path is not None:
-        param_dict = json.load(open(json_path))
-        param_dict["output_dir"] = output_dir
-    else:
-        if task in QA_TASKS:
-            param_dict = {**COMMON_TYPICAL_PARAMETERS, **QA_TYPICAL_PARAMETERS}
-            if task == "squadv2":
-                param_dict["dataset_name"] = "squad_v2"
-                param_dict["version_2_with_negative"] = 1
-            else:
-                param_dict["dataset_name"] = "squad"
-                param_dict["version_2_with_negative"] = 0
-        elif task in SUMMARY_TASKS:
-            param_dict = {**COMMON_TYPICAL_PARAMETERS, **SUMMARIZATION_TYPICAL_PARAMETERS, "dataset_name": task}
-        elif task in TRANSLATION_TASKS:
-            param_dict = {**COMMON_TYPICAL_PARAMETERS, **TRANSLATION_TYPICAL_PARAMETERS, "dataset_name": task}
-        elif task in GLUE_TASKS:
-            param_dict = {**COMMON_TYPICAL_PARAMETERS, **GLUE_TYPICAL_PARAMETERS, "dataset_name": task}
+    if task in QA_TASKS:
+        param_dict = {**COMMON_TYPICAL_PARAMETERS, **QA_TYPICAL_PARAMETERS}
+        if task == "squadv2":
+            param_dict["dataset_name"] = "squad_v2"
+            param_dict["version_2_with_negative"] = 1
         else:
-            raise ValueError(f"Unknown task {task}")
+            param_dict["dataset_name"] = "squad"
+            param_dict["version_2_with_negative"] = 0
+    elif task in SUMMARY_TASKS:
+        param_dict = {**COMMON_TYPICAL_PARAMETERS, **SUMMARIZATION_TYPICAL_PARAMETERS, "dataset_name": task}
+    elif task in TRANSLATION_TASKS:
+        param_dict = {**COMMON_TYPICAL_PARAMETERS, **TRANSLATION_TYPICAL_PARAMETERS, "dataset_name": task}
+    elif task in GLUE_TASKS:
+        param_dict = {**COMMON_TYPICAL_PARAMETERS, **GLUE_TYPICAL_PARAMETERS, "dataset_name": task}
+    else:
+        raise ValueError(f"Unknown task {task}")
 
-        param_dict["model_name_or_path"] = model_name_or_path
-        param_dict["distil_teacher_name_or_path"] = teacher
-        param_dict["per_device_train_batch_size"] = per_device_train_batch_size
-        param_dict["regularization_final_lambda"] = regularization_final_lambda
-        param_dict["dense_lambda"] = dense_lambda
-        param_dict["ampere_pruning_method"] = ampere_pruning_method
+    param_dict["model_name_or_path"] = model_name_or_path
+    param_dict["distil_teacher_name_or_path"] = teacher
+    param_dict["per_device_train_batch_size"] = per_device_train_batch_size
+    param_dict["regularization_final_lambda"] = regularization_final_lambda
+    param_dict["dense_lambda"] = dense_lambda
+    param_dict["ampere_pruning_method"] = ampere_pruning_method
+    param_dict["output_dir"] = output_dir
+    param_dict["logging_dir"] = output_dir
+    param_dict["layer_norm_patch"] = layer_norm_patch
+    param_dict["gelu_patch"] = gelu_patch
+    param_dict["qat"] = qat
+    param_dict["qconfig"] = qconfig
+
+    if teacher == "auto":
+        name_teacher = task
+        if model_name_or_path == "bert-base-uncased":
+            name_teacher += '_base'
+        elif model_name_or_path == "bert-large-uncased":
+            name_teacher += '_large'
+        distil_teacher_name_or_path = task2teacher.get(name_teacher)
+        if distil_teacher_name_or_path is None:
+            raise ValueError(f"Cannot find teacher for model {model_name_or_path} on task {task}")
+        param_dict["distil_teacher_name_or_path"] = distil_teacher_name_or_path
+
+    # override parameters from json_path
+    if json_path is not None:
+        param_dict.update(json.load(open(json_path)))
         param_dict["output_dir"] = output_dir
-        param_dict["logging_dir"] = output_dir
-        param_dict["layer_norm_patch"] = layer_norm_patch
-        param_dict["gelu_patch"] = gelu_patch
-        param_dict["qat"] = qat
-        param_dict["qconfig"] = qconfig
-
-        if teacher == "auto":
-            name_teacher = task
-            if model_name_or_path == "bert-base-uncased":
-                name_teacher += '_base'
-            elif model_name_or_path == "bert-large-uncased":
-                name_teacher += '_large'
-            distil_teacher_name_or_path = task2teacher.get(name_teacher)
-            if distil_teacher_name_or_path is None:
-                raise ValueError(f"Cannot find teacher for model {model_name_or_path} on task {task}")
-            param_dict["distil_teacher_name_or_path"] = distil_teacher_name_or_path
 
     if task in QA_TASKS:
         import nn_pruning.examples.question_answering.qa_sparse_xp as qa_sparse_xp
