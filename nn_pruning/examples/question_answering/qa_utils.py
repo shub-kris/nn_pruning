@@ -210,7 +210,7 @@ def postprocess_qa_predictions(
 
         # Make `predictions` JSON-serializable by casting np.float back to float.
         all_nbest_json[example["id"]] = [
-            {k: (float(v) if isinstance(v, (np.float32, np.float64)) else v) for k, v in pred.items()}
+            {k: (float(v) if isinstance(v, (np.float32, np.float64, np.float16)) else v) for k, v in pred.items()}
             for pred in predictions
         ]
 
@@ -413,7 +413,7 @@ def postprocess_qa_predictions_with_beam_search(
 
         # Make `predictions` JSON-serializable by casting np.float back to float.
         all_nbest_json[example["id"]] = [
-            {k: (float(v) if isinstance(v, (np.float32, np.float64)) else v) for k, v in pred.items()}
+            {k: (float(v) if isinstance(v, (np.float32, np.float64, np.float16)) else v) for k, v in pred.items()}
             for pred in predictions
         ]
 
