@@ -28,6 +28,7 @@ class TimingModule(nn.Module):
     def __init__(self, model, repeat=1, method_list=None):
         super().__init__()
         self.model = model
+        self.input_name = self.model.input_name
         self.reset()
         self.repeat = repeat
         if method_list:
